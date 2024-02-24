@@ -1,0 +1,23 @@
+{
+  "time": {
+    "microseconds": 1,
+    "milliseconds": 0.001,
+    "seconds": 0.001,
+    "minuts": 0.0166667,
+    "hours": 0.0166667,
+    "days": 0.0416667,
+    "weeks": 0.142857,
+    "mounths": 0.233333,
+    "years": 0.083333,
+    "centuries": 0.01
+  },
+
+  "length": {
+    "nanometers": 1,
+    "microns": 0.001,
+    "millimeters": 0.000001,
+    "centimeters": 0.0000001,
+    "meters": 0.000000001,
+    "kilometers": 0.000000000001
+  }
+}

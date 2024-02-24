@@ -1,38 +1,62 @@
-.App {
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  height: 100vh;
+}
+
+th > button {
+  width: 50px;
+  height: 40px;
+  background-color: orange;
+  border: 1px black;
+  border-radius: 5px;
+  margin: 1px;
+}
+
+button {
+  width: 33px;
+  margin: 2px;
+  background-color: rgb(51, 208, 219);
+  border: none;
+}
+
+input {
+  box-sizing: border-box;
+}
+
+.conv {
+  margin: 200px 10vw;
+}
+
+.box {
   text-align: center;
+  background-color: #eeeeee;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.centered {
+  display: inline-block;
+  margin: 0;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.chess-board {
+  margin: 0 auto;
+  border-spacing: 0;
+  border-collapse: collapse;
 }
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.chess-board th {
+  padding: 0.5em;
 }
-
-.App-link {
-  color: #61dafb;
+.chess-board td {
+  border: 1px solid;
+  width: 5em;
+  height: 5em;
+  text-align: center;
+  vertical-align: middle;
 }
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.chess-board .white {
+  background: #f0d9b5;
+}
+.chess-board .black {
+  background: #b58863;
 }
