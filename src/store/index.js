@@ -1,13 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
-import sliceReducer from "./calcSlice";
+import calcReducer from "./calcSlice";
+import todoReducer from './todoSlice'
 
 export default configureStore({
   reducer: {
-    calculator: sliceReducer,
+    calculator: calcReducer,
+    todo: todoReducer,
+
     /*
     converter,
     chess,
-    todo,
     */
   },
 });

@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Trash3, Pencil, Check2 } from "react-bootstrap-icons";
 import { useFormik } from "formik";
 import SideBar from "./sideBar";
+import cn from 'classnames';
+import { addTodo, removeTodo, renameTodo, completeTodo } from "../store/todoSlice";
 //import uniqueId from "lodash.uniqueid";
 
 export default () => {
@@ -79,7 +81,7 @@ export default () => {
                     ></input>
                   </div>
                   <div className="col-2">
-                    <button type="submit" className="btn btn-primary">
+                    <button type="submit" className="btn btn-primary flex-column">
                       Добавить
                     </button>
                   </div>
@@ -209,31 +211,31 @@ export default () => {
               <div className="container">
                 <div>
                   <button
-                    className={
+                    className={cn('flex-column btn mx-2', 
                       status === "all"
-                        ? "btn btn-primary mx-2"
-                        : "btn btn-secondary mx-2"
-                    }
+                        ? "btn-primary"
+                        : "btn-secondary"
+                    )}
                     onClick={() => setStatus("all")}
                   >
                     Все задачи
                   </button>
                   <button
-                    className={
-                      status === "complete"
-                        ? "btn btn-primary mx-2"
-                        : "btn btn-secondary mx-2"
-                    }
+                    className={cn('flex-column btn mx-2', 
+                    status === "complete"
+                      ? "btn-primary"
+                      : "btn-secondary"
+                  )}
                     onClick={() => setStatus("complete")}
                   >
                     Завершённые
                   </button>
                   <button
-                    className={
-                      status === "notComplete"
-                        ? "btn btn-primary mx-2"
-                        : "btn btn-secondary mx-2"
-                    }
+                    className={cn('flex-column btn mx-2', 
+                    status === "notComplete"
+                      ? "btn-primary"
+                      : "btn-secondary"
+                  )}
                     onClick={() => setStatus("notComplete")}
                   >
                     Не завершённые
