@@ -1,26 +1,37 @@
 import { createSlice } from "@reduxjs/toolkit";
+import uniqueId from "lodash.uniqueid";
 
 const slice = createSlice({
-    name: 'todo',
-    initialState: {
-        value: {},
+  name: "todo",
+  initialState: {
+    value: [],
+  },
+  reducers: {
+    addTodo: (state, action) => {
+      state.value.push({
+        text: action.payload,
+        id: uniqueId(),
+        completed: false,
+      });
     },
-    reducers: {
-        addTodo: (state, action) => {
 
-        },
-        removeTodo: (state, action) => {
+    removeTodo: (state, action) => {
+      state.value = state.value.filter((todo) => todo.id !== action.payload);
+    },
 
-        },
-        completeTodo: (state, action) => {
+    toggleComplete: (state, action) => {
+      const toggleTodo = state.value.find((todo) => todo.id === action.payload);
+      toggleTodo.completed = !toggleTodo.completed;
+    },
 
-        },
-        renameTodo: (state, action) => {
+    renameTodo: (state, action) => {
+      const renameTodo = state.value.find((todo) => todo.id === action.payload);
+      renameTodo.text = prompt("Введите новое имя для задачи", renameTodo.text);
+    },
+  },
+});
 
-        }
-    }
-})
-
-export const { addTodo, removeTodo, renameTodo, completeTodo} = slice.actions;
+export const { addTodo, removeTodo, renameTodo, toggleComplete } =
+  slice.actions;
 
 export default slice.reducer;

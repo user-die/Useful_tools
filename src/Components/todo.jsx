@@ -1,19 +1,21 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Trash3, Pencil, Check2 } from "react-bootstrap-icons";
 import { useFormik } from "formik";
 import SideBar from "./sideBar";
-import cn from 'classnames';
-import { addTodo, removeTodo, renameTodo, completeTodo } from "../store/todoSlice";
-//import uniqueId from "lodash.uniqueid";
+import cn from "classnames";
+import {
+  addTodo,
+  removeTodo,
+  renameTodo,
+  toggleComplete,
+} from "../store/todoSlice";
 
 export default () => {
   const todos = useSelector((state) => state.todo.value);
-  const store = [];
 
-  const [list, setList] = useState([]);
+  const dispath = useDispatch();
 
-  const [id, setId] = useState();
   const [status, setStatus] = useState("all");
 
   const formik = useFormik({
@@ -21,229 +23,146 @@ export default () => {
       task: "",
     },
     onSubmit: (values, { resetForm }) => {
-      store.dispatch({ type: "INCREMENT" });
+      dispath(addTodo(values.task));
       resetForm();
     },
   });
 
-  function deleteTask(e) {
-    store.dispatch({ type: "DECREMENT" });
-  }
-
-  function rename(id, task) {
-    setList((list) => {
-      const copyList = [...list];
-      copyList.splice(
-        copyList.indexOf(copyList.filter((el) => el.id === id)[0]),
-        1,
-        {
-          value: task,
-          status: copyList.filter((el) => el.id === id)[0].status,
-          id: copyList.filter((el) => el.id === id)[0].id,
+  const callback = (el) => (
+    <li className="row my-2" key={el.id} id={el.id}>
+      <p
+        className="col-9 mb-0"
+        style={
+          el.completed
+            ? {
+                textDecoration: "line-through",
+                padding: "0",
+                overflowWrap: "break-word",
+              }
+            : { padding: "0", overflowWrap: "break-word" }
         }
-      );
-      return copyList;
-    });
-  }
-
-  function doneTask(e) {
-    setList((list) => {
-      const copyList = [...list];
-      copyList.splice(
-        copyList.indexOf(copyList.filter((el) => el.id === e.target.id)[0]),
-        1,
-        {
-          value: copyList.filter((el) => el.id === e.target.id)[0].value,
-          status: !copyList.filter((el) => el.id === e.target.id)[0].status,
-          id: copyList.filter((el) => el.id === e.target.id)[0].id,
-        }
-      );
-      return copyList;
-    });
-  }
+      >
+        {el.text}
+      </p>
+      <div className="col-2 justify-content-end d-flex p-0 align-items-center">
+        <button
+          id={el.id}
+          className="me-2 btn btn-success"
+          style={{ width: "40px" }}
+          onClick={() => dispath(toggleComplete(el.id))}
+        >
+          <Check2 id={el.id} />
+        </button>
+        <button
+          id={el.id}
+          className="me-2 btn btn-danger"
+          style={{ width: "40px" }}
+          onClick={() => {
+            dispath(removeTodo(el.id));
+          }}
+        >
+          <Trash3 id={el.id} />
+        </button>
+        <button
+          className=" btn btn-warning"
+          id={el.id}
+          style={{ width: "40px" }}
+          onClick={() => dispath(renameTodo(el.id))}
+        >
+          <Pencil id={el.id} />
+        </button>
+      </div>
+    </li>
+  );
 
   return (
     <div className="container pt-5">
       <SideBar />
-      <div className="row">
-        <div className="col">
-          <div className="card">
-            <div className="card-title text-center fs-1 fw-bold">
+      <div
+        className="row border rounded-4 bg-dark bg-gradient
+"
+      >
+        <div className="col p-0">
+          <div className="container p-0">
+            <div className="row text-center fs-1 fw-bold">
               <p className="fs-1 fw-bold">Список задач</p>
             </div>
-            <div className="card-body">
-              <form className="mx-5" onSubmit={formik.handleSubmit}>
-                <div className="row">
-                  <div className="col-10">
-                    <input
-                      name="task"
-                      className="form-control"
-                      onChange={formik.handleChange}
-                      value={formik.values.task}
-                    ></input>
-                  </div>
-                  <div className="col-2">
-                    <button type="submit" className="btn btn-primary flex-column">
-                      Добавить
-                    </button>
-                  </div>
-                </div>
-              </form>
-              <div className="container d-flex" style={{ height: "600px" }}>
-                <ol className="w-100">
-                  {store &&
-                    status === "all" &&
-                    list.map((el) => (
-                      <li className="m-2 container" key={el.id} id={el.id}>
-                        <div className="row">
-                          <p
-                            className="col-8"
-                            style={
-                              el.status
-                                ? { textDecoration: "line-through" }
-                                : {}
-                            }
-                          >
-                            {el.value}
-                          </p>
-                          <button
-                            id={el.id}
-                            className="mx-1 btn btn-success "
-                            onClick={doneTask}
-                          >
-                            <Check2 id={el.id} />
-                          </button>
-                          <button
-                            id={el.id}
-                            className="mx-1 btn btn-danger"
-                            onClick={deleteTask}
-                          >
-                            <Trash3 id={el.id} />
-                          </button>
-                          <button className="mx-1 btn btn-warning" id={el.id}>
-                            <Pencil id={el.id} />
-                          </button>
-                        </div>
-                      </li>
-                    ))}
 
-                  {list &&
-                    status === "complete" &&
-                    list
-                      .filter((el) => el.status === true)
-                      .map((el) => (
-                        <li className="m-2 container" key={el.id} id={el.id}>
-                          <div className="row">
-                            <p
-                              className="col-8"
-                              style={
-                                el.status
-                                  ? { textDecoration: "line-through" }
-                                  : {}
-                              }
-                            >
-                              {el.value}
-                            </p>
-                            <button
-                              id={el.id}
-                              className="mx-1 btn btn-success "
-                              onClick={doneTask}
-                            >
-                              <Check2 id={el.id} />
-                            </button>
-                            <button
-                              id={el.id}
-                              className="mx-1 btn btn-danger"
-                              onClick={deleteTask}
-                            >
-                              <Trash3 id={el.id} />
-                            </button>
-                            <button
-                              className="mx-1 btn btn-warning"
-                              onClick={(e) => {
-                                setId(e.target.id);
-                              }}
-                              id={el.id}
-                            >
-                              <Pencil id={el.id} />
-                            </button>
-                          </div>
-                        </li>
-                      ))}
+            <form
+              className="px-5 row justify-content-between"
+              style={{ maxWidth: "inherit" }}
+              onSubmit={formik.handleSubmit}
+            >
+              <div className="col-11 p-0">
+                <input
+                  name="task"
+                  className="form-control"
+                  onChange={formik.handleChange}
+                  value={formik.values.task}
+                  placeholder="Введите задачу"
+                ></input>
+              </div>
+              <button
+                type="submit"
+                className="btn btn-primary flex-column"
+                style={{ width: "95px" }}
+              >
+                Добавить
+              </button>
+            </form>
 
-                  {list &&
-                    status === "notComplete" &&
-                    list
-                      .filter((el) => el.status === false)
-                      .map((el) => (
-                        <li className="m-2 container" key={el.id} id={el.id}>
-                          <div className="row">
-                            <p
-                              className="col-8"
-                              style={
-                                el.status
-                                  ? { textDecoration: "line-through" }
-                                  : {}
-                              }
-                            >
-                              {el.value}
-                            </p>
-                            <button
-                              id={el.id}
-                              className="mx-1 btn btn-success "
-                              onClick={doneTask}
-                            >
-                              <Check2 id={el.id} />
-                            </button>
-                            <button
-                              id={el.id}
-                              className="mx-1 btn btn-danger"
-                              onClick={deleteTask}
-                            >
-                              <Trash3 id={el.id} />
-                            </button>
-                            <button className="mx-1 btn btn-warning" id={el.id}>
-                              <Pencil id={el.id} />
-                            </button>
-                          </div>
-                        </li>
-                      ))}
-                </ol>
-              </div>
-              <div className="container">
-                <div>
-                  <button
-                    className={cn('flex-column btn mx-2', 
-                      status === "all"
-                        ? "btn-primary"
-                        : "btn-secondary"
-                    )}
-                    onClick={() => setStatus("all")}
-                  >
-                    Все задачи
-                  </button>
-                  <button
-                    className={cn('flex-column btn mx-2', 
-                    status === "complete"
-                      ? "btn-primary"
-                      : "btn-secondary"
-                  )}
-                    onClick={() => setStatus("complete")}
-                  >
-                    Завершённые
-                  </button>
-                  <button
-                    className={cn('flex-column btn mx-2', 
-                    status === "notComplete"
-                      ? "btn-primary"
-                      : "btn-secondary"
-                  )}
-                    onClick={() => setStatus("notComplete")}
-                  >
-                    Не завершённые
-                  </button>
-                </div>
-              </div>
+            <div
+              className="row mt-2 mx-5 div"
+              style={{
+                height: "600px",
+                overflowY: "overlay",
+                overflowX: "hidden",
+              }}
+            >
+              <ol>
+                {todos && status === "all" && todos.map(callback)}
+
+                {todos &&
+                  status === "complete" &&
+                  todos.filter((el) => el.completed === true).map(callback)}
+
+                {todos &&
+                  status === "notComplete" &&
+                  todos.filter((el) => el.completed === false).map(callback)}
+              </ol>
+            </div>
+
+            <div className="row my-3 px-5">
+              <button
+                className={cn(
+                  "align-items-center btn me-3",
+                  status === "all" ? "btn-primary" : "btn-secondary"
+                )}
+                style={{ flexBasis: "156px" }}
+                onClick={() => setStatus("all")}
+              >
+                Все задачи
+              </button>
+              <button
+                className={cn(
+                  "align-items-center btn me-3",
+                  status === "complete" ? "btn-primary" : "btn-secondary"
+                )}
+                style={{ flexBasis: "156px" }}
+                onClick={() => setStatus("complete")}
+              >
+                Завершённые
+              </button>
+              <button
+                className={cn(
+                  "align-items-center btn",
+                  status === "notComplete" ? "btn-primary" : "btn-secondary"
+                )}
+                style={{ flexBasis: "156px" }}
+                onClick={() => setStatus("notComplete")}
+              >
+                Не завершённые
+              </button>
             </div>
           </div>
         </div>
