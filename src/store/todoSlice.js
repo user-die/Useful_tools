@@ -6,10 +6,18 @@ const slice = createSlice({
         value: {},
     },
     reducers: {
-        addTodo,
-        removeTodo,
-        completeTodo,
-        renameTodo
+        addTodo: (state, action) => {
+
+        },
+        removeTodo: (state, action) => {
+
+        },
+        completeTodo: (state, action) => {
+
+        },
+        renameTodo: (state, action) => {
+
+        }
     }
 })
 

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Trash3, Pencil, Check2 } from "react-bootstrap-icons";
 import { useFormik } from "formik";
 import SideBar from "./sideBar";
@@ -7,6 +8,7 @@ import { addTodo, removeTodo, renameTodo, completeTodo } from "../store/todoSlic
 //import uniqueId from "lodash.uniqueid";
 
 export default () => {
+  const todos = useSelector((state) => state.todo.value);
   const store = [];
 
   const [list, setList] = useState([]);
