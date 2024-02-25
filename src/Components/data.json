@@ -19,5 +19,16 @@
     "centimeters": 0.0000001,
     "meters": 0.000000001,
     "kilometers": 0.000000000001
-  }
+  }, 
+
+  "volume" : {},
+  "weight": {},
+  "temperature": {},
+  "energy": {},
+  "square": {},
+  "velocity": {},
+  "power": {},
+  "information": {},
+  "pressure": {}, 
+  "angle": {}
 }

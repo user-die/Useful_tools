@@ -1,10 +1,17 @@
-import { useState } from "react";
-import jsonData from "./data.json";
 import { useFormik } from "formik";
+import { useDispatch, useSelector } from "react-redux";
+import { changeType } from "../store/convSlice";
+import jsonData from "./data.json";
+import uniqueId from "lodash.uniqueid";
+
 import SideBar from "./sideBar";
 
 export default () => {
-  const [converterType, setConverterType] = useState("length");
+  const type = useSelector((state) => state.converter.type);
+
+  const dispatch = useDispatch();
+
+  const typeData = (Object.entries(jsonData).filter((el) => el[0] === type)[0]);
 
   const formik = useFormik({
     initialValues: {
@@ -13,26 +20,26 @@ export default () => {
       select1: "meters",
       select2: "meters",
     },
-    //onChange: convent("time", select1),
   });
 
   function convent(type, value1, value2) {
     const data = jsonData;
 
-    console.log(data[type][value1] / data[type][value2]);
+    //console.log(data[type][value1] / data[type][value2]);
 
     //console.log(data[type][value1] * data[type][value2]);
   }
 
-  convent(converterType, formik.values.select1, formik.values.select2);
+  //convent(converterType, formik.values.select1, formik.values.select2);
 
   return (
-    <div>
+    <div className="container">
       <SideBar />
 
       <div className="conv">
-        <button>q</button>
-        <p>Время</p>
+        <select value={type} onChange={(e) => dispatch(changeType(e.target.value))} className="rounded-3" name='type'>
+          {Object.keys(jsonData).map((el) =>  <option value={el} id={uniqueId()} key={uniqueId}>{el}</option>)}
+        </select>
         <form
           style={{
             display: "flex",
@@ -46,88 +53,43 @@ export default () => {
             id={1}
             value={formik.values.input1}
             onChange={formik.handleChange}
+            className="rounded-3"
           />
-          {converterType === "length" && (
-            <select
-              name="select1"
-              id={3}
-              style={{ margin: "10px 0" }}
-              value={formik.values.select1}
-              onChange={formik.handleChange}
-            >
-              <option value="nanometers">нанометры</option>
-              <option value="microns">микроны</option>
-              <option value="millimeters">миллиметры</option>
-              <option value="centimeters">сантиметры</option>
-              <option value="meters">метры</option>
-              <option value="kilometers">киллометры</option>
-            </select>
-          )}
 
-          {converterType === "time" && (
             <select
               name="select1"
               id={3}
               style={{ margin: "10px 0" }}
               value={formik.values.select1}
               onChange={formik.handleChange}
+              className="rounded-3"
             >
-              <option value="microseconds">микросекунд</option>
-              <option value="milliseconds">миллисекунд</option>
-              <option value="seconds">секунд</option>
-              <option value="minuts">минут</option>
-              <option value="hours">часов</option>
-              <option value="days">дней</option>
-              <option value="weeks">недель</option>
-              <option value="mounths">месяцев</option>
-              <option value="years">лет</option>
-              <option value="centuries">веков</option>
+              {Object.keys(typeData[1]).map((el) => 
+                <option id={uniqueId()} key={uniqueId()} value={el}>{el}</option>
+              )}
             </select>
-          )}
-          <input
+
+            <input
             name="input2"
             id={2}
             value={formik.values.input2}
             onChange={formik.handleChange}
+            className="rounded-3"
           />
-
-          {converterType === "length" && (
-            <select
-              name="select1"
-              id={3}
-              style={{ margin: "10px 0" }}
-              value={formik.values.select2}
-              onChange={formik.handleChange}
-            >
-              <option value="nanometers">нанометры</option>
-              <option value="microns">микроны</option>
-              <option value="millimeters">миллиметры</option>
-              <option value="centimeters">сантиметры</option>
-              <option value="meters">метры</option>
-              <option value="kilometers">киллометры</option>
-            </select>
-          )}
-
-          {converterType === "time" && (
+      
             <select
               name="select2"
               id={4}
               style={{ margin: "10px 0" }}
-              value={formik.values.select2}
+              value={formik.values.select1}
               onChange={formik.handleChange}
+              className="rounded-3"
             >
-              <option value="microseconds">микросекунд</option>
-              <option value="milliseconds">миллисекунд</option>
-              <option value="seconds">секунд</option>
-              <option value="minuts">минут</option>
-              <option value="hours">часов</option>
-              <option value="days">дней</option>
-              <option value="weeks">недель</option>
-              <option value="mounths">месяцев</option>
-              <option value="years">лет</option>
-              <option value="centuries">веков</option>
+              {Object.keys(typeData[1]).map((el) => 
+                <option id={uniqueId()} key={uniqueId()} value={el}>{el}</option>
+              )}
             </select>
-          )}
+      
         </form>
       </div>
     </div>

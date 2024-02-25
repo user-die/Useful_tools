@@ -13,10 +13,12 @@ import storage from "redux-persist/lib/storage";
 
 import calcReducer from "./calcSlice";
 import todoReducer from "./todoSlice";
+import convSlice from "./convSlice";
 
 const rootReducer = combineReducers({
   calculator: calcReducer,
   todo: todoReducer,
+  converter: convSlice,
 });
 
 const persistConfig = {
