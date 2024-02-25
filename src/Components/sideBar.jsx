@@ -12,6 +12,14 @@ export default () => {
       </Link>
 
       <Link
+        to="/time"
+        className="btn btn-primary mx-auto"
+        style={{ width: "110px", display: "block" }}
+      >
+        Часы
+      </Link>
+
+      <Link
         to="/converter"
         className="btn btn-primary mx-auto"
         style={{ width: "110px", display: "block" }}
@@ -33,14 +41,6 @@ export default () => {
         style={{ width: "110px", display: "block" }}
       >
         Шахматы
-      </Link>
-
-      <Link
-        to="/chess"
-        className="btn btn-primary mx-auto"
-        style={{ width: "110px", display: "block" }}
-      >
-        Часы
       </Link>
     </div>
   );

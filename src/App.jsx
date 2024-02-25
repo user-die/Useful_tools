@@ -5,6 +5,7 @@ import Calculator from "./Components/calculator";
 import Converter from "./Components/converter";
 import Chess from "./Components/chess";
 import Todo from "./Components/todo";
+import Time from "./Components/time";
 
 function App() {
   const body = document.querySelector("body");
@@ -16,6 +17,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Todo />} />
         <Route path="/calculator" element={<Calculator />} />
+        <Route path="/time" element={<Time />} />
         <Route path="/converter" element={<Converter />} />
         <Route path="/chess" element={<Chess />} />
         <Route path="/todo" element={<Todo />} />

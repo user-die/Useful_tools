@@ -16,7 +16,7 @@ th > button {
   margin: 1px;
 }
 
-button {
+.button {
   width: 33px;
   margin: 2px;
   background-color: rgb(51, 208, 219);
