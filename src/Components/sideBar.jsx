@@ -34,6 +34,14 @@ export default () => {
       >
         Шахматы
       </Link>
+
+      <Link
+        to="/chess"
+        className="btn btn-primary mx-auto"
+        style={{ width: "110px", display: "block" }}
+      >
+        Часы
+      </Link>
     </div>
   );
 };
