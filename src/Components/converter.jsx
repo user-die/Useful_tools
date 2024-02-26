@@ -1,4 +1,3 @@
-import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import {
   changeSelect1,
@@ -14,30 +13,17 @@ import SideBar from "./sideBar";
 import { useEffect } from "react";
 
 export default () => {
-  const type = useSelector((state) => state.converter.type);
-
-  const select1 = useSelector((state) => state.converter.select1);
-  const select2 = useSelector((state) => state.converter.select2);
-
-  const input1 = useSelector((state) => state.converter.input1);
-  const input2 = useSelector((state) => state.converter.input2);
+  const converter = useSelector((state) => state.converter);
 
   const dispatch = useDispatch();
 
-  const typeData = Object.entries(jsonData).filter((el) => el[0] === type)[0];
-
-  const formik = useFormik({
-    initialValues: {
-      input1: "",
-      input2: "",
-      select1: "meters",
-      select2: "meters",
-    },
-  });
+  const typeData = Object.entries(jsonData).filter(
+    (el) => el[0] === converter.type
+  )[0];
 
   useEffect(() => {
     dispatch(calculate());
-  }, [input1, select1, select2]);
+  }, [converter.input1, converter.select1, converter.select2]);
 
   return (
     <div className="container">
@@ -45,7 +31,7 @@ export default () => {
 
       <div className="conv">
         <select
-          value={type}
+          value={converter.type}
           onChange={(e) => dispatch(changeType(e.target.value))}
           className="rounded-3"
           name="type"
@@ -68,7 +54,7 @@ export default () => {
             name="select1"
             id={3}
             style={{ margin: "10px 0" }}
-            value={select1}
+            value={converter.select1}
             onChange={(e) => dispatch(changeSelect1(e.target.value))}
             className="rounded-3"
           >
@@ -82,7 +68,7 @@ export default () => {
           <input
             name="input1"
             id={1}
-            value={input1}
+            value={converter.input1}
             onChange={(e) => dispatch(changeInput1(e.target.value))}
             className="rounded-3"
           />
@@ -91,7 +77,7 @@ export default () => {
             name="select2"
             id={4}
             style={{ margin: "10px 0" }}
-            value={select2}
+            value={converter.select2}
             onChange={(e) => dispatch(changeSelect2(e.target.value))}
             className="rounded-3"
           >
@@ -105,7 +91,7 @@ export default () => {
           <input
             name="input2"
             id={2}
-            value={input2}
+            value={converter.input2}
             onChange={(e) => dispatch(calculate())}
             className="rounded-3"
           />
