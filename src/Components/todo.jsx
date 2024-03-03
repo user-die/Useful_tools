@@ -10,6 +10,9 @@ import {
   renameTodo,
   toggleComplete,
 } from "../store/todoSlice";
+import uniqueId from "lodash.uniqueid";
+
+//смена цвета кнопки при перечёркивании
 
 export default () => {
   const todos = useSelector((state) => state.todo.value);
@@ -32,6 +35,7 @@ export default () => {
     <li className="row my-2" key={el.id} id={el.id}>
       <p
         className="col-9 mb-0"
+        id={uniqueId()}
         style={
           el.completed
             ? {
@@ -44,6 +48,7 @@ export default () => {
       >
         {el.text}
       </p>
+
       <div className="col-2 justify-content-end d-flex p-0 align-items-center">
         <button
           id={el.id}
@@ -64,7 +69,7 @@ export default () => {
           <Trash3 id={el.id} />
         </button>
         <button
-          className=" btn btn-warning"
+          className="btn btn-warning"
           id={el.id}
           style={{ width: "40px" }}
           onClick={() => dispath(renameTodo(el.id))}
@@ -100,6 +105,7 @@ export default () => {
                   onChange={formik.handleChange}
                   value={formik.values.task}
                   placeholder="Введите задачу"
+                  required="true"
                 ></input>
               </div>
               <button

@@ -13,16 +13,17 @@ const slice = createSlice({
       hours: 0,
     },
     timer: {
+      type: false,
       enabled: false,
-      milliseconds: 7200000,
+      milliseconds: 0,
       seconds: 0,
       minutes: 0,
       hours: 0,
     },
   },
   reducers: {
-    updateTime: (state, action) => {
-      state.time = action.payload;
+    updateTime: (state) => {
+      state.time = new Date();
     },
 
     updateStopwatch: (state, action) => {
@@ -46,12 +47,8 @@ const slice = createSlice({
       }
     },
 
-    startStopwatch: (state, action) => {
-      state.stopwatch.enabled = true;
-    },
-
-    stopStopwatch: (state, action) => {
-      state.stopwatch.enabled = false;
+    toggleStopwatch: (state, action) => {
+      state.stopwatch.enabled = !state.stopwatch.enabled;
     },
 
     resetStopwatch: (state, action) => {
@@ -76,35 +73,15 @@ const slice = createSlice({
       state.timer.hours = parseInt(total_hours % 60);
 
       state.timer.milliseconds = state.timer.milliseconds - 1;
-
-      /*
-      if (state.timer.milliseconds === 0) {
-        state.timer.seconds = state.timer.seconds - 1;
-        state.timer.milliseconds = 0;
-      }
-
-      if (state.timer.seconds === 0) {
-        state.timer.minutes = state.timer.minutes - 1;
-        state.timer.seconds = 0;
-      }
-
-      if (state.timer.minutes === 0) {
-        state.timer.hours = state.timer.hours - 1;
-        state.timer.minutes = 0;
-      }
-      */
     },
 
-    startTimer: (state, action) => {
-      state.timer.enabled = true;
-    },
-
-    stopTimer: (state, action) => {
-      state.timer.enabled = false;
+    toggleTimer: (state) => {
+      state.timer.enabled = !state.timer.enabled;
     },
 
     resetTimer: (state, action) => {
       state.timer = {
+        type: false,
         enabled: false,
         milliseconds: 0,
         seconds: 0,
@@ -112,19 +89,49 @@ const slice = createSlice({
         hours: 0,
       };
     },
+
+    switchTimerType: (state, action) => {
+      state.timer.type = !state.timer.type;
+    },
+
+    setTimer: (state, action) => {
+      state.timer = {
+        type: true,
+        enabled: false,
+        milliseconds: action.payload.milliseconds,
+        seconds: action.payload.seconds,
+        minutes: action.payload.minutes,
+        hours: action.payload.hours,
+      };
+    },
+
+    calculateTime: (state) => {
+      let total_minutes = parseInt(
+        Math.floor(state.timer.hours * 60 + parseInt(state.timer.minutes))
+      );
+
+      let total_seconds = parseInt(
+        Math.floor(total_minutes * 60 + parseInt(state.timer.seconds))
+      );
+
+      let total_milliseconds = parseInt(Math.floor(total_seconds * 100));
+
+      state.timer.milliseconds = total_milliseconds;
+    },
   },
 });
 
 export const {
   updateTime,
-  startStopwatch,
-  stopStopwatch,
+  toggleStopwatch,
   updateStopwatch,
   resetStopwatch,
   updateTimer,
-  startTimer,
-  stopTimer,
+  toggleTimer,
   resetTimer,
+  switchTimerType,
+  setTimer,
+  calculateTime,
 } = slice.actions;
 
 export default slice.reducer;
